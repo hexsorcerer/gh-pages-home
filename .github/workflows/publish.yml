@@ -4,8 +4,38 @@ on:
     branches: [main]
 
 jobs:
-  build:
+
+  release:
+
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+
+    env:
+      node-version: 18.x
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+    - name: Use Node.js ${{ env.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.node-version }}
+    - name: semantic-release
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        npm ci
+        npx semantic-release
+
+  build:
+
+    runs-on: ubuntu-latest
+    
     steps:
     - name: Dispatch component-update event
       uses: peter-evans/repository-dispatch@v2

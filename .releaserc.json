@@ -1,0 +1,61 @@
+{
+  "branches": [
+    {
+      "name": "main",
+      "prerelease": false
+    }
+  ],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    [
+      "@google/semantic-release-replace-plugin",
+      {
+        "replacements": [
+          {
+            "files": [
+              "docs/antora.yml"
+            ],
+            "from": "version: .*",
+            "to": "version: ${nextRelease.version}",
+            "results": [
+              {
+                "file": "docs/antora.yml",
+                "hasChanged": true,
+                "numMatches": 1,
+                "numReplacements": 1
+              }
+            ],
+            "countMatches": true
+          }
+        ]
+      }
+    ],
+    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "CHANGELOG.md"
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": [
+          "CHANGELOG.md",
+          "docs/antora.yml"
+        ]
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          {
+            "path": "CHANGELOG.md",
+            "label": "Changelog"
+          }
+        ]
+      }
+    ]
+  ]
+}
