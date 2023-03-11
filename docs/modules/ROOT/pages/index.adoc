@@ -1,3 +1,6 @@
 = Index
 
 Under construction
+
+Currently working on getting the automation setup to publish when changes are
+made.
