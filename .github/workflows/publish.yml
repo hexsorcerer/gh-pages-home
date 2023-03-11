@@ -1,0 +1,15 @@
+name: Publish to hexsorcerer.github.io
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Request playbook publish action
+      run: |
+          curl -X POST https://api.github.com/repos/hexsorcerer/gh-pages-playbook/dispatches \
+          -H 'Accept: application/vnd.github.everest-preview+json' \
+          -u ${{ secrets.DISPATCH_TOKEN }} \
+          --data '{"event_type": "component-update", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }
